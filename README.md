@@ -3,7 +3,7 @@
 ## Дебаг:
 
 1) установить [NodeJS LTS](https://nodejs.org/en/)
-2) установить yarn 1.22 командой:
+2) установить yarn 1.22.17 командой:
 
 ```bash
 npm i -g yarn
