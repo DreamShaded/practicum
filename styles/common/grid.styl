@@ -1,0 +1,172 @@
+config = json('grid-config.json', { hash: true, leave-strings: true  })
+
+breakpoints = config['breakpoints']
+columns = config['columns']
+offsets = config['offsets']
+gutters = config['gutters']
+
+
+// Ширина экрана в промежутке между двумя брейкпоинтами
+xs()
+  @media config.queries.xs
+    {block}
+
+sm()
+  @media config.queries.sm
+    {block}
+
+mb()
+  @media config.queries.mb
+    {block}
+
+md()
+  @media config.queries.md
+    {block}
+
+lg()
+  @media config.queries.lg
+    {block}
+
+xl()
+  @media config.queries.xl
+    {block}
+
+xxl()
+  @media config.queries.xxl
+    {block}
+
+// Ширина экрана МЕНЬШЕ, чем указанное значение
+lt-mb()
+  @media config.queries.lt-mb
+    {block}
+
+lt-md()
+  @media config.queries.lt-md
+    {block}
+
+lt-sm()
+  @media config.queries.lt-sm
+    {block}
+
+lt-lg()
+  @media config.queries.lt-lg
+    {block}
+
+lt-xl()
+  @media config.queries.lt-xl
+    {block}
+
+// Ширина экрана БОЛЬШЕ, чем указанное значение
+gt-sm()
+  @media config.queries.gt-sm
+    {block}
+
+gt-md()
+  @media config.queries.gt-md
+    {block}
+
+gt-lg()
+  @media config.queries.gt-lg
+    {block}
+
+gt-xl()
+  @media config.queries.gt-xl
+    {block}
+
+gt-xxl()
+  @media config.queries.gt-xxl
+    {block}
+
+// базовый миксин для задания размеров элементу
+grid-column($colsCount, $gutter, $size)
+  $gutter = $gutter * 1px
+  $gutters = ($colsCount - 1) * $gutter
+  $innerGutters = ((ceil($size) - 1) > 0 ? (ceil($size) - 1) : 0) * $gutter
+
+  return 'calc((((100% - %s) / %s) * %s) + %s)' % ($gutters $colsCount $size $innerGutters)
+
+// базовый миксин для задания оффсета элементу
+grid-column-offset($colsCount, $gutter, $size)
+  $gutter = $gutter * 1px
+  $gutters = ($colsCount - 1) * $gutter
+  $guttersOffset = ($size) * $gutter
+
+  return 'calc((((100% - %s) / %s) * %s) + %s)' % ($gutters $colsCount $size $guttersOffset)
+
+// сколько колонок занимает элемент на каждом конкретном брейкпоинте
+grid-size($xs, $sm, $md, $lg, $xl, $xxl, $prop = 'width')
+  +xs()
+    {$prop} grid-column(columns['xs'], gutters['xs'], $xs)
+  +sm()
+    {$prop} grid-column(columns['sm'], gutters['sm'], $sm)
+  +md()
+    {$prop} grid-column(columns['md'], gutters['md'], $md)
+  +lg()
+    {$prop} grid-column(columns['lg'], gutters['lg'], $lg)
+  +xl()
+    {$prop} grid-column(columns['xl'], gutters['xl'], $xl)
+  +xxl()
+    {$prop} grid-column(columns['xxl'], gutters['xxl'], $xxl)
+
+// сколько колонок отступает элемент на каждом конкретном брейкпоинте
+grid-offset($xs, $sm, $md, $lg, $xl, $xxl, $prop = 'margin-left')
+  +xs()
+    {$prop} grid-column-offset(columns['xs'], gutters['xs'], $xs)
+  +sm()
+    {$prop} grid-column-offset(columns['sm'], gutters['sm'], $sm)
+  +md()
+    {$prop} grid-column-offset(columns['md'], gutters['md'], $md)
+  +lg()
+    {$prop} grid-column-offset(columns['lg'], gutters['lg'], $lg)
+  +xl()
+    {$prop} grid-column-offset(columns['xl'], gutters['xl'], $xl)
+  +xl()
+    {$prop} grid-column-offset(columns['xxl'], gutters['xxl'], $xxl)
+
+// контейнер сетки с отступами из параметра "offsets" json-конфига
+grid-container-offset($prop = 'padding-left')
+  +xs()
+    {$prop}: $offsetXs
+  +mb()
+    {$prop}: $offsetMb
+  +sm()
+    {$prop}: $offsetSm
+  +md()
+    {$prop}: $offsetMd
+  +lg()
+    {$prop}: $offsetLg
+  +xl()
+    {$prop}: $offsetXl
+  +xxl()
+    {$prop}: $offsetXxl
+
+// контейнер сетки с отступами из параметра "gutters" json-конфига
+grid-container-gutter($prop = 'margin-left')
+  +xs()
+    {$prop}: $gutterXs
+  +sm()
+    {$prop}: $gutterSm
+  +md()
+    {$prop}: $gutterMd
+  +lg()
+    {$prop}: $gutterLg
+  +xl()
+    {$prop}: $gutterXl
+  +xxl()
+    {$prop}: $gutterXxl
+
+grid-container()
+  float none
+  width 100%
+  margin 0 auto
+
+  if config.containerMaxWidth
+    max-width: config.containerMaxWidth * 1px
+  else
+    max-width 100%
+
+  grid-container-offset('padding-right')
+  grid-container-offset('padding-left')
+
+  &.is-fluid
+    max-width 100%

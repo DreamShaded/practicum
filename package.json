@@ -1,0 +1,19 @@
+{
+  "name": "practicum",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel ./pages/entry.html",
+    "start": "yarn dev",
+    "serve": "yarn dev",
+    "build": "parcel build ./pages/entry.html --dist-dir build"
+  },
+  "devDependencies": {
+    "@parcel/transformer-stylus": "^2.2.1",
+    "parcel": "^2.2.1"
+  },
+  "dependencies": {
+    "mathjs": "^10.1.0"
+  }
+}

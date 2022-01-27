@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "moduleResolution": "Node",
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM",
+      "DOM.iterable",
+    ],
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "types": [
+      "@types/node",
+    ],
+  },
+  "include": [
+    "./"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./dist",
+    "./.eslintrc.js",
+    "./stylelint.config.js",
+    "./.svgo.config.js",
+  ]
+}

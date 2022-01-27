@@ -1,0 +1,9 @@
+node_modules/
+.idea/
+.code/
+.vscode/
+.env
+dist/
+serve/
+.parcel-cache/
+.build/

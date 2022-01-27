@@ -1,0 +1,37 @@
+{
+  "breakpoints": {
+    "xs": 320,
+    "mb": 414,
+    "lg": 768,
+    "xl": 1024
+  },
+  "columns": {
+    "xs": 2,
+    "mb": 2,
+    "lg": 6
+  },
+  "gutters": {
+    "xs": 0,
+    "mb": 0,
+    "lg": 16
+  },
+  "offsets": {
+    "xs": 8,
+    "mb": 10,
+    "lg": 30
+  },
+  "queries":  {
+    "xs": "(max-width: 413px)",
+    "mb": "(min-width: 414px) and (max-width: 767px)",
+    "lg": "(min-width: 768px) and (max-width: 1023px)",
+    "xl": "(min-width: 1024px)",
+
+    "lt-mb": "(max-width: 413px)",
+    "lt-lg": "(max-width: 767px)",
+    "lt-xl": "(max-width: 1023px)",
+
+    "gt-xs": "(min-width: 413px)",
+    "gt-xl": "(min-width: 768px)"
+  },
+  "containerMaxWidth": false
+}
