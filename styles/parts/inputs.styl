@@ -1,0 +1,28 @@
+@import '../common/tools.styl'
+
+.input
+  &__group
+    display flex
+    flex-wrap wrap
+
+  &__wrapper
+    display flex
+    align-items center
+    margin-right 50px
+    margin-bottom 25px
+    cursor pointer
+
+  &__property
+    width 20px
+    margin-right 10px
+
+  &__input
+    padding 6px 14px
+    border 1px solid rgb(131, 131, 131)
+    border-radius 6px
+    font-size 14px
+    transition border-color .3s ease-in-out
+
+    &:hover
+    &:focus
+      border-color lightblue

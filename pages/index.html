@@ -90,7 +90,7 @@
       </h2>
       <div class="result__si">
         <h3 class="result__subheading">
-          Условные обозначения
+          Условные обозначения:
         </h3>
         <!-- табличечька -->
         <table class="si">
@@ -217,6 +217,50 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Инпуты -->
+      <div class="result__inputs">
+        <h3 class="result__subheading">
+          Вводные значения:
+        </h3>
+        <p class="result__description">
+          Если Вы оставите поля пустыми, то будут использованы дефолтные значения из таблицы.
+        </p>
+
+        <!-- Единичные -->
+        <div class="input__group">
+          <!-- Число периодов -->
+          <label class="input__wrapper">
+            <p class="input__property">
+              NT
+            </p>
+            <input type="number" class="input__input" id="number-of-periods" placeholder="Число периодов">
+          </label>
+          <!-- первый период -->
+          <label class="input__wrapper">
+            <p class="input__property">
+              T
+            </p>
+            <input type="number" class="input__input" id="first-period" placeholder="Первый период">
+          </label>
+          <!-- 	геометрический шаг по периодам -->
+          <label class="input__wrapper">
+            <p class="input__property">
+              Q
+            </p>
+            <input type="number" class="input__input" id="step" placeholder="Геометрический шаг">
+          </label>
+          <!-- Число слоёв -->
+          <label class="input__wrapper">
+            <p class="input__property">
+              N
+            </p>
+            <input type="number" class="input__input" id="number-of-layers" placeholder="Число слоёв">
+          </label>
+        </div>
+
+        <!-- Групповые -->
       </div>
     </section>
     <!-- Конец =) -->
