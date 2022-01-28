@@ -1,4 +1,6 @@
-import { e, i, sqrt } from 'mathjs';
+import {
+  atan, e, evaluate, i, sqrt,
+} from 'mathjs';
 
 export const countThisStuff = {
   // Значения сингл инпутов
@@ -28,6 +30,14 @@ export const countThisStuff = {
       </tr>
     </thead>`,
 
+  renderTableBody(results: Array<number[]>): string {
+    // @ts-ignore
+    const arrayOfRows = results.map((row: number[]) => this.renderTableRow(...row as number[]));
+    const body = arrayOfRows.join('');
+
+    return body;
+  },
+
   renderTableRow(
     index: number,
     sqrtT: number,
@@ -42,6 +52,15 @@ export const countThisStuff = {
         <td class="si__item--is">${phase}</td>
       </tr>
     `;
+  },
+
+  renderFullTable(body: string): void {
+    const fullTable = `<table class="si">
+    ${this.resultHeadings + body}
+    </table>
+    `;
+    this.resultWrapper.innerHTML = fullTable;
+    this.summary.classList.remove('invisible');
   },
 
   // вычисления
@@ -61,37 +80,58 @@ export const countThisStuff = {
 
   doAllTheMagicHere(): void {
     const Q = Number(this.step) || 2;
-    const T = Number(this.firstPeriod) || 0.01;
     const NT = Number(this.numberOfPeriods) || 27;
     const N = Number(this.numberOfLayers) || 3;
     // приводим строки в массивах к числам
-    const resistanceArray = this.resistanceArray.map((i) => +i);
-    const thicknessArray = this.thicknessArray.map((i) => +i);
+    const resistanceArray = this.resistanceArray.map((item) => +item);
+    const thicknessArray = this.thicknessArray.map((item) => +item);
     // Омега
-    const circularFrequency = (2 * Math.PI) / T;
     // cчётчик слоёв.
-    const m = thicknessArray.length;
+    const m = N - 2;
     // Мю нулевое
     const magneticConst = (4 * Math.PI) * (10 ** (-7));
+    const result = [];
+
+    let T = Number(this.firstPeriod) || 0.01;
+    let impedance: any;
+    let circularFrequency;
 
     for (let period = 0; period < NT; period++) {
       // приведённый импеданс, зависит от свойств среды.
-      let impedance: number;
       impedance = 1;
+      circularFrequency = (2 * Math.PI) / T;
+
       for (let layer = m; layer > -1; layer--) {
         // Волновое число
-        const k = (-1 * i * circularFrequency * magneticConst) / resistanceArray[period];
-        // Вспомогательные константы для расчёта импеданса
-        const A = sqrt(resistanceArray[period] / resistanceArray[period + 1]);
-        const B = ((e ** (-2 * k * thicknessArray[period])) * (impedance - A)) / (impedance + A);
+        const k = evaluate(`sqrt(-1 * ${i} * ${circularFrequency * magneticConst}) / ${resistanceArray[layer]}`);
 
-        impedance = (1 + B) / (1 - B);
+        // Вспомогательные константы для расчёта импеданса
+        const A = sqrt(resistanceArray[layer] / resistanceArray[layer + 1]);
+        const helperOne = evaluate(`-2 * ${k} * ${thicknessArray[layer]}`);
+        const helperTwo = evaluate(`${e} ^ ${helperOne}`);
+
+        const B = evaluate(`(${helperTwo} * (${impedance} - ${A}))/(${impedance} + ${A})`);
+
+        impedance = evaluate(`(1 + ${B}) / (1 - ${B})`);
       }
+
+      // теперь считаем
+      const resultsArray = [];
+      resultsArray.push(period + 1);
+      resultsArray.push(sqrt(T));
+      resultsArray.push(evaluate(`${resistanceArray[0]} * abs(${impedance} ^ 2)`));
+      resultsArray.push(atan(impedance.im / impedance.re));
+
+      result.push(resultsArray);
+      T *= Q;
     }
+
+    const body = this.renderTableBody(result);
+    this.renderFullTable(body);
   },
 
   bindEvent(): void {
     this.getAllValues();
-    this.doAllTheMagicHere();
+    this.resultButton.addEventListener('click', this.doAllTheMagicHere.bind(this));
   },
 };
