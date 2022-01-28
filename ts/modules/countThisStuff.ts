@@ -79,6 +79,7 @@ export const countThisStuff = {
   },
 
   doAllTheMagicHere(): void {
+    this.getAllValues();
     const Q = Number(this.step) || 2;
     const NT = Number(this.numberOfPeriods) || 27;
     const N = Number(this.numberOfLayers) || 3;
@@ -131,7 +132,6 @@ export const countThisStuff = {
   },
 
   bindEvent(): void {
-    this.getAllValues();
     this.resultButton.addEventListener('click', this.doAllTheMagicHere.bind(this));
   },
 };
