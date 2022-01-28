@@ -225,7 +225,8 @@
           Вводные значения:
         </h3>
         <p class="result__description">
-          Если Вы оставите поля пустыми, то будут использованы дефолтные значения из таблицы.
+          Если Вы оставите поля пустыми, то будут использованы дефолтные значения из таблицы. При обновлении страницы
+          значения сбросятся на дефолтные.
         </p>
 
         <!-- Единичные -->
@@ -260,12 +261,22 @@
           </label>
         </div>
 
-        <!-- Групповые -->
+        <!-- Группа слоёв -->
+        <h3 class="input__subtitle">
+          Мощности слоёв
+        </h3>
+        <div id="js-append-layer-thickness" class="input__group invisible"></div>
+
+        <!-- Группа сопротивлений -->
+        <h3 class="input__subtitle">
+          Сопротивления слоёв
+        </h3>
+        <div id="js-append-layer-resistance" class="input__group invisible"></div>
       </div>
     </section>
     <!-- Конец =) -->
   </div>
-  <script src="/ts/index.ts"></script>
+  <script src="/ts/index.ts" type="module"></script>
 </body>
 
 </html>

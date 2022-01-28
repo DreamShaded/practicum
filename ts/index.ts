@@ -1,5 +1,7 @@
-const modules = [
+import { creation } from './modules/createInputs';
 
+const modules = [
+  creation,
 ];
 
 const init = () => {

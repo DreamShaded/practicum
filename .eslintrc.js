@@ -29,5 +29,6 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'import/no-extraneous-dependencies': 0,
     'import/prefer-default-export': 0,
+    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }]
   },
 };
