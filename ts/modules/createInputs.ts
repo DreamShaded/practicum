@@ -11,6 +11,7 @@ export const creation = {
 
     if (!currentLayers) {
       this.createInputsForThickness(this.initialLayers, true);
+      this.createInputsForResistance(this.initialLayers, true);
       return;
     }
 
