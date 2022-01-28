@@ -1,0 +1,39 @@
+@import '../common/tools.styl'
+.result
+  &__heading
+    text-align center
+    font-weight bold
+    margin-bottom 5rem
+    font-size 20px
+    text-transform capitalize
+
+  &__subheading
+    margin-bottom 1rem
+    font-size 16px
+    font-weight bold
+
+  &__description
+    margin-bottom 1rem
+
+  &__si
+  &__inputs
+  &__button
+  &__results
+    margin-bottom 5rem
+
+
+  &__button
+    cursor pointer
+    padding 10px 25px
+    border-radius 8px
+    background-color blue
+    color white
+    font-size 16px
+    font-weight bold
+    transition-property transform, background-color
+    transition-duration .3s
+    transition-timing-function ease-in-out
+
+    &:hover
+      transform scale(1.1)
+      background-color rgb(106, 80, 255)

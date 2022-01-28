@@ -130,6 +130,17 @@
             </tr>
             <tr>
               <td class="si__item--letter">
+                &mu;
+              </td>
+              <td class="si__item--is">
+                магнитная проницаемость
+              </td>
+              <td class="si__item--default">
+                &mu;<sub>0</sub> = 1, проницаемость вакуума
+              </td>
+            </tr>
+            <tr>
+              <td class="si__item--letter">
                 &phi;<sub>t</sub>
               </td>
               <td class="si__item--is">
@@ -151,7 +162,7 @@
             <tr>
               <td class="si__item--letter">T</td>
               <td class="si__item--is">
-                первый период, с
+                период, с
               </td>
               <td class="si__item--default">
                 0.01
@@ -243,7 +254,7 @@
             <p class="input__property">
               T
             </p>
-            <input type="number" class="input__input" id="first-period" placeholder="Первый период">
+            <input type="number" class="input__input" id="first-period" placeholder="Период">
           </label>
           <!-- 	геометрический шаг по периодам -->
           <label class="input__wrapper">
@@ -257,7 +268,7 @@
             <p class="input__property">
               N
             </p>
-            <input type="number" class="input__input" id="number-of-layers" placeholder="Число слоёв">
+            <input type="number" class="input__input" id="number-of-layers" placeholder="Число слоёв" min="2">
           </label>
         </div>
 
@@ -272,6 +283,19 @@
           Сопротивления слоёв
         </h3>
         <div id="js-append-layer-resistance" class="input__group invisible"></div>
+      </div>
+
+      <!-- Кнопка -->
+      <button class="result__button" id="get-results">
+        Рассчитать
+      </button>
+
+      <!-- Результаты, собстна -->
+      <div class="invisible results__wrapper" id="summary">
+        <h3 class="result__subheading">
+          Результаты:
+        </h3>
+        <div class="result__results" id="js-append-results"></div>
       </div>
     </section>
     <!-- Конец =) -->

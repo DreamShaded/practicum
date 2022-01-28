@@ -9,7 +9,8 @@ export const creation = {
   setCurrentLayers(): void {
     const currentLayers = this.layersInput.value;
 
-    if (!currentLayers) {
+    if (!currentLayers || +currentLayers < 2) {
+      this.layersInput.value = '3';
       this.createInputsForThickness(this.initialLayers, true);
       this.createInputsForResistance(this.initialLayers, true);
       return;
@@ -61,7 +62,7 @@ export const creation = {
   },
 
   createInputsForResistance(layers: number, initial: boolean): void {
-    const className = 'js-append-layer-resistance';
+    const className = 'js-get-layer-resistance';
     const placeholder = 'Сопротивление слоя';
 
     let htmlToAppend = '';
