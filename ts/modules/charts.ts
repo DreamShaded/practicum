@@ -73,12 +73,6 @@ export const charts = {
       },
       options: {
         responsive: false,
-        // scales: {
-        //   y: {
-        //     max: 1000,
-        //     min: 10,
-        //   },
-        // },
       },
     });
 
