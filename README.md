@@ -12,7 +12,7 @@
 ## Запуск:
 
 1) установить [NodeJS LTS](https://nodejs.org/en/)
-2) Открыть консоль (Git Bash на Windows удобнее) и установить yarn 1.22.17 командой:
+2) Открыть консоль (Git Bash на Windows может быть удобнее) и установить yarn 1.22.17 командой:
 
 ```bash
 npm i -g yarn
