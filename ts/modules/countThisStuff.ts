@@ -155,6 +155,7 @@ export const countThisStuff = {
 
         // Вспомогательные вычисления для расчёта импеданса
         const A = sqrt(resistanceArray[layer] / resistanceArray[layer + 1]);
+        // @ts-ignore
         const B = this.countHelperConstant(A, k, impedance, thicknessArray[layer]);
 
         // высчитываем с помощью math импеданс
