@@ -1,5 +1,11 @@
 @import '../common/tools.styl'
 .result
+  &__wrapper
+  &__charts
+    transition-property max-height, opacity
+    transition-timing-function ease-in-out
+    transition-duration .3s
+
   &__heading
     text-align center
     font-weight bold

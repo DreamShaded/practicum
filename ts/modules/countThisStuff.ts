@@ -25,7 +25,7 @@ export const countThisStuff = {
   resultButton: document.getElementById('get-results') as HTMLButtonElement,
   resultWrapper: document.getElementById('js-append-results') as HTMLDivElement,
   summary: document.getElementById('summary') as HTMLDivElement,
-  charts: document.getElementById('charts') as HTMLDivElement,
+  charts: document.getElementById('charts-container') as HTMLDivElement,
   // Вспомогательная константа
   resultHeadings: `
     <thead>
