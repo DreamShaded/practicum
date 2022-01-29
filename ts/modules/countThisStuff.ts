@@ -1,8 +1,12 @@
 import {
-  add, atan, Complex, complex, divide, e, evaluate, i, multiply, pow, sqrt, subtract,
+  add, atan2, Complex, complex,
+  divide, e, evaluate, i, multiply,
+  pow, sqrt, subtract,
 } from 'mathjs';
 
 export const countThisStuff = {
+  // приведение к градусам радианов
+  radToGradFactor: 180 / Math.PI,
   // Мю нулевое
   magneticConst: (4 * Math.PI) * (10 ** (-7)),
   // Значения сингл инпутов
@@ -113,6 +117,11 @@ export const countThisStuff = {
     return res;
   },
 
+  countPhase(impedance: Complex) {
+    const arcTang = atan2(impedance.im, impedance.re);
+    return subtract(arcTang * this.radToGradFactor, 45);
+  },
+
   doAllTheMagicHere(): void {
     this.getAllValues();
     const Q = Number(this.step) || 2;
@@ -121,8 +130,6 @@ export const countThisStuff = {
     // приводим строки в массивах к числам
     const resistanceArray = this.resistanceArray.map((item) => +item);
     const thicknessArray = this.thicknessArray.map((item) => +item);
-    // приведение радианов в градусы
-    const radToGradFactor = 180 / Math.PI;
     // cчётчик слоёв. Массивы тут с нуля, так что -2 - самый простой способ
     const m = N - 2;
 
@@ -163,7 +170,9 @@ export const countThisStuff = {
       resultsArray.push(sqrt(T));
       resultsArray.push(evaluate(`${resistanceArray[0]} * ((abs(${impedance}) ^ 2))`));
 
-      resultsArray.push(atan(impedance.im / impedance.re) * radToGradFactor);
+      // развалим фазу на части
+      const resultPhase = this.countPhase(impedance);
+      resultsArray.push(resultPhase);
 
       result.push(resultsArray);
       T *= Q;
