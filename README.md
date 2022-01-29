@@ -7,6 +7,7 @@
 4) Библиотеки:
 
     4.1) [MathJS](https://mathjs.org/)
+
     4.2) [ChartJS](https://www.chartjs.org/)
 
 ## Запуск:
