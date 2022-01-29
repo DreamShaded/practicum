@@ -2,7 +2,7 @@
 
 ## Использовано:
 1) Язык программирования: [Typescript](https://www.typescriptlang.org/)
-2) Рантайм: [NodeJS 16.13.2](https://nodejs.org/en/)
+2) Рантайм: [NodeJS 16.9.1](https://nodejs.org/en/)
 3) Бандлер (cборщик): [Parcel 2.2.1](https://parceljs.org/)
 4) Библиотеки:
 
