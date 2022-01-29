@@ -1,5 +1,5 @@
 import {
-  atan, Complex, complex, e, evaluate, i, sqrt,
+  add, atan, Complex, complex, divide, e, evaluate, i, multiply, pow, sqrt, subtract,
 } from 'mathjs';
 
 export const countThisStuff = {
@@ -79,15 +79,15 @@ export const countThisStuff = {
     this.resistanceArray = this.getArrayOfValues(this.resistanceClass);
   },
   // чтобы упростить дебаг ошибок, выношу все вычисления в функции отдельные.
-  countWavenumber(frequency: number, resistance: number): Complex {
+  countWavenumber(frequency: number, resistance: number): number {
     // вычисляю кусочки делимого в дроби под корнем, упрощая поиск ошибок
     const helpOne = frequency * this.magneticConst;
-    const helpTwo = evaluate(`-1 * ${i}`);
-    const dividend = evaluate(`${helpTwo} * ${helpOne}`);
+    const helpTwo = multiply(-1, i);
+    const dividend = multiply(helpTwo, helpOne);
     // теперь вычисляю значение дроби под корнем
-    const divisionResult = evaluate(`${dividend} / ${resistance}`);
+    const divisionResult = divide(dividend, resistance);
     // корешок квадратный
-    const result = evaluate(`sqrt(${divisionResult})`);
+    const result = sqrt(divisionResult);
     return result;
   },
 
@@ -98,16 +98,18 @@ export const countThisStuff = {
     thickness: number,
   ): Complex {
     // сначала вычисляю степень для экспоненты
-    const exponent = evaluate(`-2 * ${waveNumber} * ${thickness}`);
-    const leftPartOfExpression = evaluate(`${e} ^ ${exponent}`);
-    // теперь дробь
-    const sumImpedanceWithResSQRT = evaluate(`${impedance} + ${resistanceSqrt}`);
-    const differenceImpedanceWithResSQRT = evaluate(`${impedance} - ${resistanceSqrt}`);
+    const exponent = multiply(-2, waveNumber);
+    const exp2 = multiply(exponent, thickness) as Complex;
 
-    const rightPartOfExpression = evaluate(`${differenceImpedanceWithResSQRT} / ${sumImpedanceWithResSQRT}`);
+    const leftPartOfExpression = pow(e, exp2);
+    // теперь дробь
+    const sumImpedanceWithResSQRT = add(resistanceSqrt, impedance);
+    const differenceImpedanceWithResSQRT = subtract(impedance, resistanceSqrt);
+
+    const rightPartOfExpression = divide(differenceImpedanceWithResSQRT, sumImpedanceWithResSQRT);
 
     // результат
-    const res = evaluate(`${leftPartOfExpression} * ${rightPartOfExpression}`);
+    const res = multiply(leftPartOfExpression, rightPartOfExpression) as Complex;
     return res;
   },
 
@@ -119,16 +121,16 @@ export const countThisStuff = {
     // приводим строки в массивах к числам
     const resistanceArray = this.resistanceArray.map((item) => +item);
     const thicknessArray = this.thicknessArray.map((item) => +item);
-    // приведение рад в градусы
+    // приведение радианов в градусы
     const radToGradFactor = 180 / Math.PI;
-    // cчётчик слоёв.
+    // cчётчик слоёв. Массивы тут с нуля, так что -2 - самый простой способ
     const m = N - 2;
 
     const result = [];
 
     let T = Number(this.firstPeriod) || 0.01;
     let impedance: Complex;
-    // более известная, как омега
+    // так же известная, как омега
     let circularFrequency;
 
     for (let period = 0; period < NT; period++) {
@@ -155,7 +157,7 @@ export const countThisStuff = {
       resultsArray.push(period + 1);
       // квадратный корень периода
       resultsArray.push(sqrt(T));
-      resultsArray.push(evaluate(`${resistanceArray[0]} * (abs(${impedance}) ^ 2)`));
+      resultsArray.push(evaluate(`${resistanceArray[0]} * ((abs(${impedance}) ^ 2))`));
 
       resultsArray.push(atan(impedance.im / impedance.re) * radToGradFactor);
 
