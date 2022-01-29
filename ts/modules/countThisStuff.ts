@@ -25,6 +25,7 @@ export const countThisStuff = {
   resultButton: document.getElementById('get-results') as HTMLButtonElement,
   resultWrapper: document.getElementById('js-append-results') as HTMLDivElement,
   summary: document.getElementById('summary') as HTMLDivElement,
+  charts: document.getElementById('charts') as HTMLDivElement,
   // Вспомогательная константа
   resultHeadings: `
     <thead>
@@ -53,14 +54,15 @@ export const countThisStuff = {
     return `
       <tr>
         <td class="si__head">${index}</td>
-        <td class="si__item--is">${sqrtT}</td>
-        <td class="si__item--is">${resistance}</td>
-        <td class="si__item--is">${phase}</td>
+        <td class="si__item--sqrt">${sqrtT}</td>
+        <td class="si__item--resistance">${resistance}</td>
+        <td class="si__item--phase">${phase}</td>
       </tr>
     `;
   },
 
   renderFullTable(body: string): void {
+    // докинул грязь, но ладно
     const fullTable = `<table class="si">
     ${this.resultHeadings + body}
     </table>
@@ -124,9 +126,9 @@ export const countThisStuff = {
 
   doAllTheMagicHere(): void {
     this.getAllValues();
-    const Q = Number(this.step) || 2;
-    const NT = Number(this.numberOfPeriods) || 27;
-    const N = Number(this.numberOfLayers) || 3;
+    const Q = Number(this.step.value) || 2;
+    const NT = Number(this.numberOfPeriods.value) || 27;
+    const N = Number(this.numberOfLayers.value) || 3;
     // приводим строки в массивах к числам
     const resistanceArray = this.resistanceArray.map((item) => +item);
     const thicknessArray = this.thicknessArray.map((item) => +item);
@@ -180,6 +182,7 @@ export const countThisStuff = {
 
     const body = this.renderTableBody(result);
     this.renderFullTable(body);
+    this.charts.classList.remove('invisible');
   },
 
   bindEvent(): void {
