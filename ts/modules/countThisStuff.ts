@@ -148,7 +148,11 @@ export const countThisStuff = {
         const A = sqrt(resistanceArray[layer] / resistanceArray[layer + 1]);
         const B = this.countHelperConstant(A, k, impedance, thicknessArray[layer]);
 
-        impedance = evaluate(`(1 + ${B}) / (1 - ${B})`);
+        // высчитываем с помощью math импеданс
+        const divident = add(1, B);
+        const divider = subtract(1, B);
+
+        impedance = divide(divident, divider) as Complex;
       }
 
       // теперь считаем
