@@ -7,7 +7,7 @@
     "dev": "parcel ./pages/entry.html",
     "start": "yarn dev",
     "serve": "yarn dev",
-    "build": "parcel build ./pages/entry.html --dist-dir build"
+    "build": "parcel build ./pages/entry.html --public-url . --dist-dir build"
   },
   "devDependencies": {
     "@parcel/transformer-stylus": "^2.2.1",
