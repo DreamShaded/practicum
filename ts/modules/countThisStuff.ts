@@ -1,8 +1,10 @@
 import {
-  atan, e, evaluate, i, sqrt,
+  atan, Complex, complex, e, evaluate, i, sqrt,
 } from 'mathjs';
 
 export const countThisStuff = {
+  // Мю нулевое
+  magneticConst: (4 * Math.PI) * (10 ** (-7)),
   // Значения сингл инпутов
   numberOfPeriods: document.getElementById('number-of-periods') as HTMLInputElement,
   numberOfLayers: document.getElementById('number-of-layers') as HTMLInputElement,
@@ -70,12 +72,43 @@ export const countThisStuff = {
     const nodesArray: HTMLInputElement[] = Array.from(nodes);
 
     nodesArray.forEach((node) => result.push(node.value));
-
     return result;
   },
   getAllValues(): void {
     this.thicknessArray = this.getArrayOfValues(this.thicknessClass);
     this.resistanceArray = this.getArrayOfValues(this.resistanceClass);
+  },
+  // чтобы упростить дебаг ошибок, выношу все вычисления в функции отдельные.
+  countWavenumber(frequency: number, resistance: number): Complex {
+    // вычисляю кусочки делимого в дроби под корнем, упрощая поиск ошибок
+    const helpOne = frequency * this.magneticConst;
+    const helpTwo = evaluate(`-1 * ${i}`);
+    const dividend = evaluate(`${helpTwo} * ${helpOne}`);
+    // теперь вычисляю значение дроби под корнем
+    const divisionResult = evaluate(`${dividend} / ${resistance}`);
+    // корешок квадратный
+    const result = evaluate(`sqrt(${divisionResult})`);
+    return result;
+  },
+
+  countHelperConstant(
+    resistanceSqrt: number,
+    waveNumber: Complex,
+    impedance: Complex,
+    thickness: number,
+  ): Complex {
+    // сначала вычисляю степень для экспоненты
+    const exponent = evaluate(`-2 * ${waveNumber} * ${thickness}`);
+    const leftPartOfExpression = evaluate(`${e} ^ ${exponent}`);
+    // теперь дробь
+    const sumImpedanceWithResSQRT = evaluate(`${impedance} + ${resistanceSqrt}`);
+    const differenceImpedanceWithResSQRT = evaluate(`${impedance} - ${resistanceSqrt}`);
+
+    const rightPartOfExpression = evaluate(`${differenceImpedanceWithResSQRT} / ${sumImpedanceWithResSQRT}`);
+
+    // результат
+    const res = evaluate(`${leftPartOfExpression} * ${rightPartOfExpression}`);
+    return res;
   },
 
   doAllTheMagicHere(): void {
@@ -86,42 +119,45 @@ export const countThisStuff = {
     // приводим строки в массивах к числам
     const resistanceArray = this.resistanceArray.map((item) => +item);
     const thicknessArray = this.thicknessArray.map((item) => +item);
-    // Омега
+    // приведение рад в градусы
+    const radToGradFactor = 180 / Math.PI;
     // cчётчик слоёв.
     const m = N - 2;
-    // Мю нулевое
-    const magneticConst = (4 * Math.PI) * (10 ** (-7));
+
     const result = [];
 
     let T = Number(this.firstPeriod) || 0.01;
-    let impedance: any;
+    let impedance: Complex;
+    // более известная, как омега
     let circularFrequency;
 
     for (let period = 0; period < NT; period++) {
       // приведённый импеданс, зависит от свойств среды.
-      impedance = 1;
+      impedance = complex('1');
+
+      // омежечка тут
       circularFrequency = (2 * Math.PI) / T;
 
       for (let layer = m; layer > -1; layer--) {
         // Волновое число
-        const k = evaluate(`sqrt(-1 * ${i} * ${circularFrequency * magneticConst}) / ${resistanceArray[layer]}`);
+        const k = this.countWavenumber(circularFrequency, resistanceArray[layer]);
 
-        // Вспомогательные константы для расчёта импеданса
+        // Вспомогательные вычисления для расчёта импеданса
         const A = sqrt(resistanceArray[layer] / resistanceArray[layer + 1]);
-        const helperOne = evaluate(`-2 * ${k} * ${thicknessArray[layer]}`);
-        const helperTwo = evaluate(`${e} ^ ${helperOne}`);
-
-        const B = evaluate(`(${helperTwo} * (${impedance} - ${A}))/(${impedance} + ${A})`);
+        const B = this.countHelperConstant(A, k, impedance, thicknessArray[layer]);
 
         impedance = evaluate(`(1 + ${B}) / (1 - ${B})`);
       }
 
       // теперь считаем
       const resultsArray = [];
+      // номер для понятности
       resultsArray.push(period + 1);
+      // квадратный корень периода
       resultsArray.push(sqrt(T));
-      resultsArray.push(evaluate(`${resistanceArray[0]} * abs(${impedance} ^ 2)`));
-      resultsArray.push(atan(impedance.im / impedance.re));
+      resultsArray.push(evaluate(`${resistanceArray[0]} * (abs(${impedance}) ^ 2)`));
+
+      resultsArray.push(atan(impedance.im / impedance.re) * radToGradFactor);
 
       result.push(resultsArray);
       T *= Q;
